@@ -35,6 +35,12 @@ namespace Tests {
         }
 
         [Test]
+        public void Demonstrate_DbReferenceFetch() {
+
+            Assert.Fail();
+        }
+
+        [Test]
         public void Demonstrate_SaveAndDeleteEventHooks() {
 
             Assert.Fail();
