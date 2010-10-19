@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace Tests {
 
     [TestFixture]
-    public class DemoTests {
+    public class NoRMTests {
 
         private const string ConnectionString = "mongodb://localhost/NoRMSample";
 
@@ -135,6 +135,18 @@ namespace Tests {
 
                 Assert.IsNotNull(fetched);
             }
+        }
+
+        [Test]
+        public void Demonstrate_PropertyAliasing() {
+
+            Assert.Fail();
+        }
+
+        [Test]
+        public void Demonstrate_MapReduce() {
+
+            Assert.Fail();
         }
     }
 }
