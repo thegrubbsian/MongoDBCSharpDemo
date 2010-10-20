@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using Norm.BSON.DbTypes;
+using NoRMatic;
 using NUnit.Framework;
 using NoRMaticSample;
 
@@ -10,13 +11,12 @@ namespace Tests {
     [TestFixture]
     public class NoRMaticTests {
 
-        private const string ConnectionString = "mongodb://localhost/NoRMSample";
-        
         [SetUp]
         public void DropCollections() {
             Product.DeleteAll();
             Document.DeleteAll();
             Article.DeleteAll();
+            Subscriber.DeleteAll();
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace Tests {
                 LastName = "Doe",
                 DateOfBirth = new DateTime(1980, 1, 1)
             };
-            
+
             patient.Save();
             patient.Delete();
 
@@ -118,24 +118,78 @@ namespace Tests {
         [Test]
         public void Demonstrate_SaveAndDeleteEventHooks() {
 
-            Assert.Fail();
+            const int projectNumber = 73;
+            Document.AddBeforeSaveBehavior(x => {
+                x.ProjectNumber = projectNumber;
+                return true;
+            });
+
+            var document = new Document {
+                Author = "Jim Beam",
+                Content = "Tired of making stuff up",
+                Title = "This is a title"
+            };
+            document.Save();
+
+            var fetched = Document.GetById(document.Id);
+            Assert.AreEqual(fetched.ProjectNumber, projectNumber);
         }
 
         [Test]
         public void Demonstrate_GlobalQueryFilters() {
 
-            Assert.Fail();
+            Document.AddQueryBehavior(x => x.ProjectNumber == 73);
+
+            var document = new Document {
+                ProjectNumber = 123,
+                Author = "Jim Beam",
+                Content = "Tired of making stuff up",
+                Title = "This is a title"
+            };
+            document.Save();
+
+            var fetched = Document.Find(x => x.Author == "Jim Beem");
+            Assert.AreEqual(0, fetched.Count());
         }
 
         [Test]
         public void Demonstrate_SimpleLogging() {
 
-            Assert.Fail();
+            var log = new List<string>();
+            NoRMaticConfig.SetLogListener(x => log.Add(x));
+
+            var article = new Article {
+                Author = "Eddie Bauer",
+                Body = "One, two, three, go"
+            };
+            article.Save();
+
+            var fetched = Article.All();
+
+            Assert.AreEqual(0, log.Count);
         }
 
         [Test]
         public void Demonstrate_Configuration() {
-            
+
+            NoRMaticConfig.Initialize();
+
+            var subscriberA = new Subscriber {
+                FirstName = "Steve",
+                LastName = "Carrell",
+                City = "Austin, TX"
+            };
+            subscriberA.Save();
+
+            var subscriberB = new Subscriber {
+                FirstName = "Steve",
+                LastName = "Carrell",
+                City = "Charlotte"
+            };
+            subscriberB.Save();
+
+            var fetched = Subscriber.Find(x => x.LastName == "Carrell");
+            Assert.AreEqual(1, fetched.Count());
         }
     }
 }

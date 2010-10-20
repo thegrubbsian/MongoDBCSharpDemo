@@ -21,6 +21,8 @@ namespace Tests {
             session.DropCollection<Patient>();
             session.DropCollection<Product>();
             session.DropCollection<Article>();
+            session.DropCollection<Order>();
+            session.DropCollection<Event>();
             session.DropCollection("MythicalCreatures");
         }
 
@@ -165,8 +167,34 @@ namespace Tests {
 
         [Test]
         public void Demonstrate_TypeDiscrimination() {
-            
-            Assert.Fail();
+
+            var orderA = new Order {
+                Quantity = 12,
+                Item = new Book {
+                    Supplier = "Acme",
+                    Author = "James Patterson",
+                    Sku = "d9e9fje",
+                    Title = "A Tree Grows in Brooklyn"
+                }
+            };
+
+            var orderB = new Order {
+                Quantity = 4,
+                Item = new Chair {
+                    Supplier = "Acme",
+                    Maker = "Target",
+                    NumberOfLegs = 3,
+                    Sku = "39ejr9r"
+                }
+            };
+
+            var session = new MongoSession();
+            session.Save(orderA);
+            session.Save(orderB);
+
+            var fetched = session.Query<Order>().SingleOrDefault(x => x.Id == orderA.Id);
+
+            Assert.IsTrue(fetched.Item is Book);
         }
 
         [Test]
