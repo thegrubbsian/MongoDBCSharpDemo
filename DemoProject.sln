@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoRMSample", "NoRMSample\No
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoRMaticSample", "NoRMaticSample\NoRMaticSample.csproj", "{2F65912C-9940-464F-A62A-B53F5F165986}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoCSharpSample", "MongoCSharpSample\MongoCSharpSample.csproj", "{52029C4B-2583-4102-A509-BCCB8127D7BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{2F65912C-9940-464F-A62A-B53F5F165986}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F65912C-9940-464F-A62A-B53F5F165986}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F65912C-9940-464F-A62A-B53F5F165986}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52029C4B-2583-4102-A509-BCCB8127D7BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52029C4B-2583-4102-A509-BCCB8127D7BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52029C4B-2583-4102-A509-BCCB8127D7BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52029C4B-2583-4102-A509-BCCB8127D7BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -196,39 +196,5 @@ namespace Tests {
 
             Assert.IsTrue(fetched.Item is Book);
         }
-
-        [Test]
-        public void Demonstrate_MapReduce() {
-
-            var events = new List<Event> {
-                new Event { Tags = new List<string> { "Apple", "Orange", "Pear" } },
-                new Event { Tags = new List<string> { "Apple", "Orange" } },
-                new Event { Tags = new List<string> { "Orange" } },
-                new Event { Tags = new List<string> { "Banana" } },
-                new Event { Tags = new List<string> { "Banana", "Peach" } }
-            };
-
-            var session = new MongoSession();
-            session.BulkInsert(events);
-
-            var map = @"function () { 
-                this.Tags.forEach(function(x) {
-                    emit(x, { count: 1 });
-                });
-            }";
-
-            var reduce = @"function(key, values) {
-                var total = 0;
-                for (var i = 0; i < values.length; i++) {
-                    total += values[i].count;
-                }
-                return { Tag: key, Count: total };
-            }";
-
-            using (var db = Mongo.Create(ConnectionString)) {
-                var values = db.GetCollection<Event>().MapReduce<Expando>(map, reduce);
-                Assert.NotNull(values.ToList()[0].Get<Expando>("value")["Count"]);
-            }
-        }
     }
 }
